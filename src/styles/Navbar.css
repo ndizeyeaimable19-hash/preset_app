@@ -1,0 +1,94 @@
+/* ── Navbar.css ── */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 48px;
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid #1e1e2a;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f9fafb;
+  cursor: pointer;
+  letter-spacing: -0.5px;
+}
+
+.navbar-logo span {
+  color: #e879f9;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navbar-links a {
+  color: #6b7280;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.navbar-links a:hover {
+  color: #f9fafb;
+  background: #1a1a24;
+}
+
+.navbar-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c026d3, #7c3aed);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+}
+
+.navbar-cart {
+  background: #1a1a24;
+  border: 1px solid #1e1e2a;
+  color: #f9fafb !important;
+  border-radius: 10px !important;
+  padding: 6px 14px !important;
+  font-weight: 700 !important;
+}
+
+.navbar-cart:hover {
+  border-color: #e879f9 !important;
+  color: #e879f9 !important;
+}
+
+.navbar-logout {
+  background: none;
+  border: 1px solid #2a1a1a;
+  color: #f87171;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 4px;
+}
+
+.navbar-logout:hover {
+  background: #f8717122;
+}

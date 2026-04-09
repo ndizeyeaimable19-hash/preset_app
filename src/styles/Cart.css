@@ -1,0 +1,243 @@
+/* ── Cart.css ── */
+
+.cart-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.cart-page h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.cart-empty span {
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Banners ── */
+.cart-success {
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #10b981;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.cart-error {
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.3);
+  color: #f87171;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Cart items ── */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+}
+
+.cart-item:hover {
+  border-color: rgba(192,38,211,0.25);
+}
+
+.cart-item img {
+  width: 90px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.cart-details {
+  flex: 1;
+}
+
+.cart-details h3 {
+  font-family: 'Syne', sans-serif;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cart-details p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.cart-item .price {
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #e879f9;
+  flex-shrink: 0;
+}
+
+/* ── Qty controls ── */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 8px;
+}
+
+.qty-controls button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  padding: 0;
+}
+
+.qty-controls button:hover {
+  background: rgba(192,38,211,0.15);
+  border-color: var(--purple);
+}
+
+.qty-controls span {
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── Buttons ── */
+.remove-btn {
+  background: rgba(248,113,113,0.12);
+  border: 1px solid rgba(248,113,113,0.25);
+  color: #f87171;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  background: rgba(248,113,113,0.22);
+}
+
+.download-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 7px 14px;
+  background: rgba(16,185,129,0.15);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #10b981;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.download-btn:hover {
+  background: rgba(16,185,129,0.25);
+}
+
+/* ── Summary ── */
+.cart-summary {
+  margin-top: 2rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cart-total {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.cart-total span {
+  color: #e879f9;
+}
+
+.checkout-btn {
+  background: linear-gradient(135deg, #c026d3, #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(192,38,211,0.3);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.checkout-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.finish-btn {
+  background: var(--bg3);
+  border: 1px solid var(--purple);
+  color: #e879f9;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.finish-btn:hover {
+  background: rgba(192,38,211,0.1);
+}

@@ -1,0 +1,196 @@
+/* ── PresetCard.css ── */
+
+.preset-card {
+  background: #13131a;
+  border: 1px solid #1e1e2a;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.preset-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border-color: rgba(192, 38, 211, 0.35);
+}
+
+/* ── Image area ── */
+.preset-card-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0a0a0f;
+}
+
+.preset-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.preset-card:hover .preset-card-image img {
+  transform: scale(1.07);
+}
+
+/* Category badge */
+.preset-card-category {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+
+/* Heart button */
+.preset-card-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  z-index: 2;
+}
+
+.preset-card-heart:hover {
+  transform: scale(1.15);
+  background: rgba(244, 63, 94, 0.2);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+.preset-card-heart.active {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+/* ── Body ── */
+.preset-card-body {
+  padding: 1.1rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.preset-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #f9fafb;
+  cursor: pointer;
+  transition: color 0.2s;
+  line-height: 1.2;
+}
+
+.preset-card-title:hover {
+  color: #e879f9;
+}
+
+.preset-card-desc {
+  color: #6b7280;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Footer row — price + cart button ── */
+.preset-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.preset-card-price {
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #e879f9;
+}
+
+.preset-card-btn {
+  background: linear-gradient(135deg, #c026d3, #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 0 16px rgba(192, 38, 211, 0.25);
+}
+
+.preset-card-btn:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.preset-card-btn.in-cart {
+  background: #1a1a24;
+  border: 1px solid #2a2a3a;
+  color: #6b7280;
+  cursor: default;
+  box-shadow: none;
+}
+
+.preset-card-btn:disabled {
+  cursor: not-allowed;
+}
+
+/* ── Favorite text button ── */
+.preset-card-fav {
+  background: transparent;
+  border: 1px solid #1e1e2a;
+  color: #4b5563;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+
+.preset-card-fav:hover {
+  border-color: #f43f5e;
+  color: #f43f5e;
+  background: rgba(244, 63, 94, 0.06);
+}
+
+.preset-card-fav.active {
+  border-color: rgba(244, 63, 94, 0.3);
+  color: #f43f5e;
+  background: rgba(244, 63, 94, 0.08);
+}
