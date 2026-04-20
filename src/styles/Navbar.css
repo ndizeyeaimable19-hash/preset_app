@@ -61,14 +61,6 @@
   font-family: 'Syne', sans-serif;
 }
 
-.navbar-cart {
-  background: #1a1a24;
-  border: 1px solid #1e1e2a;
-  color: #f9fafb !important;
-  border-radius: 10px !important;
-  padding: 6px 14px !important;
-  font-weight: 700 !important;
-}
 
 .navbar-cart:hover {
   border-color: #e879f9 !important;

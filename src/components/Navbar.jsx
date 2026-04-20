@@ -1,13 +1,25 @@
 // src/components/Navbar.jsx
 import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
-  const { cart } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Theme State
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  // Apply theme to HTML root
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
     <nav className="navbar">
@@ -19,6 +31,12 @@ export default function Navbar() {
         <Link to="/">Home</Link>
         <Link to="/presets">Presets</Link>
         <Link to="/favorites">Favorites</Link>
+        <Link to="/contact">Contact</Link>
+
+        {/* Theme Toggle Button */}
+        <button onClick={toggleTheme} className="theme-toggle" style={{ background: "transparent", fontSize: "1.2rem" }}>
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
 
         {user ? (
           <>
@@ -39,10 +57,6 @@ export default function Navbar() {
             <Link to="/register">Register</Link>
           </>
         )}
-
-        <Link to="/cart" className="navbar-cart">
-          🛒 {cart.length}
-        </Link>
       </div>
     </nav>
   );

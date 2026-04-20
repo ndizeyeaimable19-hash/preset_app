@@ -1,16 +1,27 @@
 // src/components/PresetCard.jsx
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import Rating from "./Rating";
 import "../styles/PresetCard.css";
 
 export default function PresetCard({
   preset,
-  addToCart,
-  isInCart,
   onToggleFavorite,
   isFavorite = false,
   isFavoritesPage = false,
 }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleDownload = (e) => {
+    e.stopPropagation(); // Don't trigger navigate to detail page
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    // Navigate to preset detail page where download happens
+    navigate(`/presets/${preset._id || preset.id}`);
+  };
 
   return (
     <div className="preset-card">
@@ -45,27 +56,42 @@ export default function PresetCard({
         </div>
         <div className="preset-card-desc">{preset.description}</div>
 
-        <div className="preset-card-footer">
-          <span className="preset-card-price">${preset.price}</span>
+        {/* ── RATING DISPLAY ── */}
+        <div style={{ margin: "8px 0" }}>
+          <Rating 
+            presetId={preset._id || preset.id} 
+            currentRating={preset.averageRating || 0}
+            ratingCount={preset.ratingCount || 0}
+            showCount={true}
+            readOnly={true}
+            size={16}
+          />
+        </div>
 
+        <div className="preset-card-footer">
+          {/* ❌ REMOVED PRICE — REPLACED WITH FREE BADGE */}
+          <span className="preset-card-free">Free Download</span>
+
+          {/* ❌ REMOVED CART BUTTON — REPLACED WITH DOWNLOAD BUTTON */}
           <button
-            className={`preset-card-btn ${isInCart ? "in-cart" : ""}`}
-            onClick={() => { if (!isInCart) addToCart(preset); }}
-            disabled={isInCart}
+            className="preset-card-download-btn"
+            onClick={handleDownload}
           >
-            {isInCart ? "✓ In Cart" : "+ Cart"}
+            ⬇ Download
           </button>
         </div>
 
         {/* Favorite text button */}
         <button
           className={`preset-card-fav ${isFavorite ? "active" : ""}`}
-          onClick={() => onToggleFavorite(preset)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(preset);
+          }}
         >
           {isFavoritesPage ? "Remove from Favorites ❤️" : isFavorite ? "❤️ Favorited" : "🤍 Add to Favorites"}
         </button>
       </div>
-
     </div>
   );
 }

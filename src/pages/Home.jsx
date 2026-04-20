@@ -1,17 +1,18 @@
 // src/pages/Home.jsx
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import { useFavorites } from "../context/FavoritesContext";
+import Rating from "../components/Rating";
 import "../styles/Home.css";
 
 const getId = (item) => item._id || item.id;
 
 const FEATURES = [
   { icon: "🎨", title: "Pro Quality",      desc: "Every preset is reviewed before listing to ensure top quality." },
-  { icon: "⚡", title: "Instant Download", desc: "Purchase and download your presets immediately." },
-  { icon: "💸", title: "Fair Pricing",     desc: "Transparent pricing with no hidden fees or subscriptions." },
-  { icon: "🔒", title: "Secure Checkout",  desc: "Your payments are encrypted and fully secure." },
+  { icon: "⚡", title: "Instant Download", desc: "Download your favorite presets immediately — no waiting." },
+  { icon: "🆓", title: "100% Free",        desc: "No hidden fees, no subscriptions — completely free for everyone." },
+  { icon: "❤️", title: "Save Favorites",   desc: "Heart presets you love and access them anytime in your profile." },
 ];
 
 const CATEGORIES = [
@@ -37,24 +38,35 @@ function SkeletonCard() {
 
 export default function Home() {
   const navigate = useNavigate();
-  const { cart, addToCart } = useCart();
+  const { user } = useAuth();
   const { favorites, toggleFavorite } = useFavorites();
 
-  const [presets, setPresets]   = useState([]);
-  const [loading, setLoading]   = useState(true);
-  const [stats, setStats]       = useState({ presets: 0 });
+  const [presets, setPresets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({ presets: 0 });
 
   useEffect(() => {
     fetch("http://localhost:5000/presets")
       .then(res => res.json())
       .then(data => {
         const list = Array.isArray(data) ? data : [];
-        setPresets(list.slice(0, 6)); // show 6 featured presets
+        setPresets(list);
         setStats({ presets: list.length });
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
+
+  // Get top rated presets (minimum 1 rating)
+  const topRatedPresets = presets
+    .filter(p => p.ratingCount > 0)
+    .sort((a, b) => {
+      if (b.averageRating !== a.averageRating) {
+        return b.averageRating - a.averageRating;
+      }
+      return b.ratingCount - a.ratingCount;
+    })
+    .slice(0, 3);
 
   return (
     <div className="home-page">
@@ -64,7 +76,7 @@ export default function Home() {
         <div className="home-hero-left">
           <div className="home-badge">
             <span className="home-badge-dot" />
-            MARKETPLACE NOW LIVE
+            FREE PRESETS NOW LIVE
           </div>
 
           <h1 className="home-title">
@@ -73,7 +85,7 @@ export default function Home() {
           </h1>
 
           <p className="home-subtitle">
-            Buy and sell professional Lightroom presets. Trusted by thousands of photographers worldwide.
+            Download professional-quality presets for Lightroom, Photoshop, and more — 100% free.
           </p>
 
           <div className="home-cta">
@@ -87,9 +99,9 @@ export default function Home() {
 
           <div className="home-stats">
             {[
-              ["50K+", "Photographers"],
+              ["∞", "Free Downloads"],
               [stats.presets > 0 ? `${stats.presets}` : "12K+", "Presets"],
-              ["$2M+", "Paid Out"],
+              ["❤️", "Community Loved"],
             ].map(([val, label]) => (
               <div key={label} className="home-stat">
                 <div className="home-stat-value">{val}</div>
@@ -128,6 +140,72 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── Top Rated Presets ── */}
+      {topRatedPresets.length > 0 && (
+        <div className="home-section">
+          <div className="home-section-header">
+            <h2>🏆 Top Rated Presets</h2>
+            <button onClick={() => navigate("/presets?sort=rating")}>View All →</button>
+          </div>
+          <div className="home-presets-grid">
+            {topRatedPresets.map(preset => (
+              <div
+                key={getId(preset)}
+                className="home-preset-card"
+                onClick={() => navigate(`/presets/${getId(preset)}`)}
+              >
+                <div className="home-preset-img-wrap">
+                  <img src={preset.image} alt={preset.name} />
+                  <span className="home-preset-category">{preset.category}</span>
+
+                  {/* Heart button */}
+                  <button
+                    className={`home-preset-heart ${favorites.some(f => getId(f) === getId(preset)) ? "active" : ""}`}
+                    onClick={(e) => { e.stopPropagation(); toggleFavorite(preset); }}
+                  >
+                    {favorites.some(f => getId(f) === getId(preset)) ? "❤️" : "🤍"}
+                  </button>
+                </div>
+
+                <div className="home-preset-body">
+                  <div className="home-preset-name">{preset.name}</div>
+                  <div className="home-preset-desc">{preset.description}</div>
+                  
+                  {/* Rating Display */}
+                  <div style={{ margin: "8px 0" }}>
+                    <Rating 
+                      presetId={getId(preset)} 
+                      currentRating={preset.averageRating || 0}
+                      ratingCount={preset.ratingCount || 0}
+                      showCount={true}
+                      readOnly={true}
+                      size={16}
+                    />
+                  </div>
+
+                  <div className="home-preset-footer">
+                    <span className="home-preset-price">Free</span>
+                    <button
+                      className="home-preset-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!user) {
+                          navigate('/login');
+                          return;
+                        }
+                        navigate(`/presets/${getId(preset)}`);
+                      }}
+                    >
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── Categories ── */}
       <div className="home-section">
         <div className="home-section-header">
@@ -159,7 +237,7 @@ export default function Home() {
         <div className="home-presets-grid">
           {loading
             ? Array(6).fill(0).map((_, i) => <SkeletonCard key={i} />)
-            : presets.map(preset => (
+            : presets.slice(0, 6).map(preset => (
                 <div
                   key={getId(preset)}
                   className="home-preset-card"
@@ -181,17 +259,33 @@ export default function Home() {
                   <div className="home-preset-body">
                     <div className="home-preset-name">{preset.name}</div>
                     <div className="home-preset-desc">{preset.description}</div>
+                    
+                    {/* Rating Display */}
+                    <div style={{ margin: "8px 0" }}>
+                      <Rating 
+                        presetId={getId(preset)} 
+                        currentRating={preset.averageRating || 0}
+                        ratingCount={preset.ratingCount || 0}
+                        showCount={true}
+                        readOnly={true}
+                        size={16}
+                      />
+                    </div>
+
                     <div className="home-preset-footer">
-                      <span className="home-preset-price">${preset.price}</span>
+                      <span className="home-preset-price">Free</span>
                       <button
-                        className={`home-preset-btn ${cart.some(i => getId(i) === getId(preset)) ? "in-cart" : ""}`}
+                        className="home-preset-btn"
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (!cart.some(i => getId(i) === getId(preset))) addToCart(preset);
+                          if (!user) {
+                            navigate('/login');
+                            return;
+                          }
+                          navigate(`/presets/${getId(preset)}`);
                         }}
-                        disabled={cart.some(i => getId(i) === getId(preset))}
                       >
-                        {cart.some(i => getId(i) === getId(preset)) ? "✓ In Cart" : "+ Cart"}
+                        Download
                       </button>
                     </div>
                   </div>
@@ -218,7 +312,7 @@ export default function Home() {
       {/* ── CTA Banner ── */}
       <div className="home-cta-banner">
         <h2>Ready to transform your photos?</h2>
-        <p>Join thousands of photographers using PresetStore</p>
+        <p>Join thousands of creators using our free presets</p>
         <button onClick={() => navigate("/presets")}>Browse All Presets →</button>
       </div>
 

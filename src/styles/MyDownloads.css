@@ -1,0 +1,44 @@
+/* src/styles/MyDownloads.css */
+.downloads-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: var(--bg2);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.downloads-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: var(--purple-lt);
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: var(--bg3);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.order-card p {
+  margin: 5px 0;
+}
+
+.order-card ul {
+  list-style: none;
+  padding: 10px 0 10px 20px;
+  margin: 10px 0;
+  border-left: 3px solid var(--purple-dim);
+}
+
+.order-card li {
+  margin: 5px 0;
+}

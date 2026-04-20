@@ -15,18 +15,15 @@ const orderSchema = new mongoose.Schema({
         required: true,
       },
       name: String,
-      price: Number,
+      // ❌ REMOVED: price: Number,
       qty: { type: Number, default: 1 },
     }
   ],
-  total: {
-    type: Number,
-    required: true,
-  },
+  // ❌ REMOVED: total: { type: Number, required: true },
   status: {
     type: String,
-    enum: ["pending", "paid", "failed"],
-    default: "paid",
+    enum: ["pending", "completed"], // simplified
+    default: "completed",
   },
 }, { timestamps: true });
 
