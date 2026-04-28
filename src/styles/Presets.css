@@ -7,6 +7,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .presets-header {
@@ -22,65 +26,80 @@
   font-family: 'Syne', sans-serif;
   font-size: 2rem;
   font-weight: 800;
-  color: #f9fafb;
+  color: var(--text);
+  transition: color 0.3s ease;
 }
 
 .cart-count {
-  background: #13131a;
-  border: 1px solid #1e1e2a;
-  color: #f9fafb;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
   font-family: 'DM Mono', monospace;
   font-weight: 700;
   font-size: 0.9rem;
   padding: 6px 16px;
   border-radius: 10px;
+  transition: all 0.3s ease;
 }
 
 /* ── Search ── */
 .search-input {
   width: 100%;
   max-width: 420px;
-  background: #13131a;
-  border: 1px solid #1e1e2a;
-  color: #f9fafb;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
   border-radius: 12px;
   padding: 11px 16px;
   font-size: 0.95rem;
   font-family: 'DM Sans', sans-serif;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background-color 0.3s ease, color 0.3s ease;
   outline: none;
 }
 
 .search-input:focus {
-  border-color: #c026d3;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 2px var(--purple-dim);
 }
 
 .search-input::placeholder {
-  color: #4b5563;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
 }
 
 /* ── Sort buttons ── */
 .sort-buttons {
   display: flex;
   gap: 0.6rem;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .sort-buttons button {
-  background: #13131a;
-  border: 1px solid #1e1e2a;
-  color: #6b7280;
-  border-radius: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 100px;
   padding: 8px 18px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 600;
   font-size: 0.88rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .sort-buttons button:hover {
-  border-color: #c026d3;
-  color: #e879f9;
+  border-color: var(--purple);
+  color: var(--purple-lt);
+  background: var(--purple-dim);
+}
+
+.sort-buttons button.active {
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 16px var(--purple-dim);
 }
 
 /* ── Category chips ── */
@@ -88,31 +107,33 @@
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .chip {
-  background: #13131a;
-  border: 1px solid #1e1e2a;
-  color: #6b7280;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
   border-radius: 100px;
   padding: 7px 20px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 600;
   font-size: 0.88rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .chip:hover {
-  border-color: #c026d3;
-  color: #e879f9;
+  border-color: var(--purple);
+  color: var(--purple-lt);
+  background: var(--purple-dim);
 }
 
 .chip.active {
-  background: linear-gradient(135deg, #c026d3, #7c3aed);
+  background: linear-gradient(135deg, var(--purple), var(--blue));
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 0 16px rgba(192, 38, 211, 0.3);
+  box-shadow: 0 0 16px var(--purple-dim);
 }
 
 /* ── Grid ── */
@@ -127,6 +148,25 @@
   .presets-container {
     grid-template-columns: 1fr;
   }
+  
+  .presets-page {
+    padding: 2rem 1rem;
+  }
+  
+  .presets-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .search-input {
+    max-width: 100%;
+  }
+  
+  .sort-buttons,
+  .category-chips {
+    justify-content: center;
+  }
 }
 
 /* ── Status ── */
@@ -136,10 +176,12 @@
   font-weight: 700;
   padding: 4rem;
   text-align: center;
-  color: #4b5563;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
 }
+
 .preset-download-btn {
-  background: linear-gradient(135deg, #c026d3, #7c3aed);
+  background: linear-gradient(135deg, var(--purple), var(--blue));
   color: white;
   border: none;
   border-radius: 8px;
@@ -147,40 +189,30 @@
   font-weight: 700;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--purple-dim);
 }
 
 .preset-download-btn:hover {
   opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--purple-dim);
 }
 
-.sort-buttons {
-  display: flex;
-  gap: 8px;
-  margin: 20px 0;
-  flex-wrap: wrap;
-  justify-content: center;
+/* Light theme specific adjustments */
+[data-theme="light"] .presets-page {
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
 }
 
-.sort-buttons button {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  color: var(--text);
-  border-radius: 100px;
-  padding: 8px 16px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
+[data-theme="light"] .cart-count {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.sort-buttons button:hover {
-  border-color: var(--purple);
-  color: var(--purple-lt);
+[data-theme="light"] .search-input {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.sort-buttons button.active {
-  background: var(--purple-dim);
-  border-color: var(--purple);
-  color: var(--purple-lt);
+/* Add global transition for smooth theme switching */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }

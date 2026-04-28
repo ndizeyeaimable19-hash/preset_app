@@ -1,5 +1,5 @@
 // src/components/Navbar.jsx
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
@@ -7,18 +7,35 @@ import "../styles/Navbar.css";
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ Added to detect current page
+
+  // Check if we're on the profile page
+  const isProfilePage = location.pathname === "/profile";
 
   // Theme State
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) return savedTheme;
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return "light";
+    }
+    return "dark";
+  });
 
-  // Apply theme to HTML root
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    setTimeout(() => {
+      document.documentElement.setAttribute("data-theme", newTheme);
+      document.body.style.display = 'none';
+      document.body.offsetHeight;
+      document.body.style.display = '';
+    }, 10);
   };
 
   return (
@@ -33,8 +50,11 @@ export default function Navbar() {
         <Link to="/favorites">Favorites</Link>
         <Link to="/contact">Contact</Link>
 
-        {/* Theme Toggle Button */}
-        <button onClick={toggleTheme} className="theme-toggle" style={{ background: "transparent", fontSize: "1.2rem" }}>
+        <button 
+          onClick={toggleTheme} 
+          className="theme-toggle"
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
           {theme === "dark" ? "☀️" : "🌙"}
         </button>
 
@@ -47,9 +67,15 @@ export default function Navbar() {
               Profile
             </Link>
             {user.isAdmin && <Link to="/admin">Admin</Link>}
-            <button className="navbar-logout" onClick={() => { logout(); navigate("/login"); }}>
-              Logout
-            </button>
+            {/* ✅ Only show Logout button when NOT on Profile page */}
+            {!isProfilePage && (
+              <button 
+                className="navbar-logout" 
+                onClick={() => { logout(); navigate("/login"); }}
+              >
+                Logout
+              </button>
+            )}
           </>
         ) : (
           <>

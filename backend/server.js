@@ -136,22 +136,21 @@ function requireAdmin(req, res, next) {
 ================================ */
 
 // ── GET current user's favorites
+// ── GET current user's favorites
 app.get("/favorites/my", authenticateToken, async (req, res) => {
   try {
     console.log("🔍 Fetching favorites for user:", req.user.id);
     
     const favorites = await Favorite.find({ user: req.user.id })
-      .populate({
-        path: 'preset',
-        select: 'name description category image fileType ratings',
-        match: { _id: { $exists: true } }
-      })
-      .sort({ createdAt: -1 });
+      .populate("preset", "name description category image fileType")
+      .sort({ createdAt: -1 })
+      .lean(); // ✅ Use .lean()
 
+    // Filter out any null/undefined presets
     const validFavorites = favorites
-      .filter(fav => fav.preset !== null)
+      .filter(fav => fav.preset !== null && fav.preset !== undefined)
       .map(fav => ({
-        ...fav.preset.toObject(),
+        ...fav.preset,
         favoritedAt: fav.createdAt,
         _id: fav.preset._id
       }));
@@ -164,7 +163,6 @@ app.get("/favorites/my", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 // ── TOGGLE favorite (add/remove)
 app.post("/favorites/toggle", authenticateToken, async (req, res) => {
   try {
@@ -271,15 +269,26 @@ app.post("/login", async (req, res) => {
 ================================ */
 
 // GET all presets — public
+// GET all presets — public
 app.get("/presets", async (req, res) => {
   try {
     const presets = await Preset.find()
       .select("-presetFile")
       .sort({ createdAt: -1 });
     
-    const presetsWithRatings = presets.map(p => p.toJSON());
-    res.json(presetsWithRatings);
+    // Safely convert to JSON with virtuals
+    const result = presets.map(p => {
+      const obj = p.toObject({ virtuals: true });
+      return {
+        ...obj,
+        averageRating: obj.averageRating || 0,
+        ratingCount: obj.ratingCount || 0,
+      };
+    });
+    
+    res.json(result);
   } catch (err) {
+    console.error("Error in GET /presets:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -297,11 +306,18 @@ app.get("/profile/me", authenticateToken, async (req, res) => {
 });
 
 // GET preset by ID — public
+// GET preset by ID — public
 app.get("/presets/:id", async (req, res) => {
   try {
     const preset = await Preset.findById(req.params.id).select("-presetFile");
     if (!preset) return res.status(404).json({ message: "Preset not found" });
-    res.json(preset.toJSON());
+    
+    const obj = preset.toObject({ virtuals: true });
+    res.json({
+      ...obj,
+      averageRating: obj.averageRating || 0,
+      ratingCount: obj.ratingCount || 0,
+    });
   } catch (err) {
     res.status(404).json({ message: "Preset not found" });
   }
@@ -543,23 +559,59 @@ app.post("/downloads", authenticateToken, async (req, res) => {
 app.get("/downloads/my", authenticateToken, async (req, res) => {
   try {
     const downloads = await Order.find({ user: req.user.id })
-      .populate("presets.preset", "name image fileType")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
+
+    for (let download of downloads) {
+      for (let item of download.presets) {
+        if (item.preset) {
+          try {
+            const preset = await Preset.findById(item.preset)
+              .select("name image fileType")
+              .lean();
+            item.preset = preset;
+          } catch (e) {
+            item.preset = null;
+          }
+        }
+      }
+    }
+
     res.json(downloads);
   } catch (err) {
+    console.error("❌ Error in /downloads/my:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
-
 // GET user's downloads (previously "orders")
 app.get("/orders/my", authenticateToken, async (req, res) => {
   try {
+    console.log("📦 Fetching orders for user:", req.user.id);
+    
     const orders = await Order.find({ user: req.user.id })
-      .populate("presets.preset", "name image fileType")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Manually populate preset data for each order
+    for (let order of orders) {
+      for (let item of order.presets) {
+        if (item.preset) {
+          try {
+            const preset = await Preset.findById(item.preset)
+              .select("name image fileType")
+              .lean();
+            item.preset = preset;
+          } catch (e) {
+            item.preset = null;
+          }
+        }
+      }
+    }
+
+    console.log("✅ Found", orders.length, "orders");
     res.json(orders);
   } catch (err) {
-    console.error("Error in /orders/my:", err);
+    console.error("❌ Error in /orders/my:", err);
     res.status(500).json({ message: "Server error" });
   }
 });

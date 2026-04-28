@@ -23,13 +23,14 @@ export default function PresetCard({
     navigate(`/presets/${preset._id || preset.id}`);
   };
 
+  const getId = (item) => item._id || item.id;
+
   return (
     <div className="preset-card">
-
       {/* ── Image ── */}
       <div
         className="preset-card-image"
-        onClick={() => navigate(`/presets/${preset._id || preset.id}`)}
+        onClick={() => navigate(`/presets/${getId(preset)}`)}
       >
         <img src={preset.image} alt={preset.name} />
 
@@ -50,7 +51,7 @@ export default function PresetCard({
       <div className="preset-card-body">
         <div
           className="preset-card-title"
-          onClick={() => navigate(`/presets/${preset._id || preset.id}`)}
+          onClick={() => navigate(`/presets/${getId(preset)}`)}
         >
           {preset.name}
         </div>
@@ -59,7 +60,7 @@ export default function PresetCard({
         {/* ── RATING DISPLAY ── */}
         <div style={{ margin: "8px 0" }}>
           <Rating 
-            presetId={preset._id || preset.id} 
+            presetId={getId(preset)} 
             currentRating={preset.averageRating || 0}
             ratingCount={preset.ratingCount || 0}
             showCount={true}

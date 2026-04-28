@@ -8,8 +8,8 @@ import { useFavorites } from "../context/FavoritesContext";
 function StatCard({ icon, label, value, accent }) {
   return (
     <div style={{
-      background: "#13131a",
-      border: "1px solid #1e1e2a",
+      background: "var(--bg2)",
+      border: "1px solid var(--border)",
       borderRadius: 16,
       padding: "1.5rem",
       display: "flex",
@@ -32,7 +32,7 @@ function StatCard({ icon, label, value, accent }) {
       </div>
       <div>
         <div style={{
-          color: "#fff",
+          color: "var(--text)",
           fontFamily: "'Syne', sans-serif",
           fontWeight: 800,
           fontSize: "1.5rem",
@@ -41,7 +41,7 @@ function StatCard({ icon, label, value, accent }) {
           {value}
         </div>
         <div style={{
-          color: "#555",
+          color: "var(--text-muted)",
           fontFamily: "'DM Sans', sans-serif",
           fontSize: 13,
           marginTop: 4,
@@ -61,8 +61,8 @@ function Tab({ label, active, onClick }) {
       style={{
         background: "none",
         border: "none",
-        borderBottom: active ? "2px solid #e879f9" : "2px solid transparent",
-        color: active ? "#e879f9" : "#555",
+        borderBottom: active ? "2px solid var(--purple-lt)" : "2px solid transparent",
+        color: active ? "var(--purple-lt)" : "var(--text-muted)",
         fontFamily: "'DM Sans', sans-serif",
         fontWeight: 700,
         fontSize: "0.95rem",
@@ -85,17 +85,17 @@ function InfoRow({ label, value }) {
       justifyContent: "space-between",
       alignItems: "center",
       padding: "0.75rem 0",
-      borderBottom: "1px solid #1e1e2a",
+      borderBottom: "1px solid var(--border)",
     }}>
       <span style={{
-        color: "#555",
+        color: "var(--text-muted)",
         fontFamily: "'DM Sans', sans-serif",
         fontSize: 14,
       }}>
         {label}
       </span>
       <span style={{
-        color: "#f9fafb",
+        color: "var(--text)",
         fontFamily: "'DM Mono', monospace",
         fontSize: 14,
       }}>
@@ -112,11 +112,11 @@ function Empty({ icon, message, sub }) {
       textAlign: "center",
       padding: "4rem 2rem",
     }}>
-      <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+      <div style={{ fontSize: "3rem", marginBottom: "1rem", color: "var(--text)" }}>
         {icon}
       </div>
       <div style={{
-        color: "#666",
+        color: "var(--text)",
         fontFamily: "'Syne', sans-serif",
         fontWeight: 700,
         fontSize: "1.1rem",
@@ -125,7 +125,7 @@ function Empty({ icon, message, sub }) {
         {message}
       </div>
       <div style={{
-        color: "#444",
+        color: "var(--text-muted)",
         fontFamily: "'DM Sans', sans-serif",
         fontSize: 14,
       }}>
@@ -170,18 +170,19 @@ export default function Profile() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0a0f",
+        background: "var(--bg)",
+        color: "var(--text)",
       }}>
         <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔒</div>
         <h2 style={{
-          color: "#fff",
+          color: "var(--text)",
           fontFamily: "'Syne', sans-serif",
           marginBottom: "0.5rem",
         }}>
           You're not logged in
         </h2>
         <p style={{
-          color: "#555",
+          color: "var(--text-muted)",
           fontFamily: "'DM Sans', sans-serif",
           marginBottom: "1.5rem",
         }}>
@@ -190,7 +191,7 @@ export default function Profile() {
         <button
           onClick={() => navigate("/login")}
           style={{
-            background: "linear-gradient(135deg, #c026d3, #7c3aed)",
+            background: "linear-gradient(135deg, var(--purple), var(--blue))",
             color: "#fff",
             border: "none",
             borderRadius: 12,
@@ -214,25 +215,35 @@ export default function Profile() {
     window.open(`http://localhost:5000/presets/${presetId}/download`, "_blank");
   };
 
-  return (
+ return (
     <div style={{
-      background: "#0a0a0f",
+      background: "var(--bg)",
       minHeight: "100vh",
       fontFamily: "'DM Sans', sans-serif",
+      color: "var(--text)",
+      width: "100%",
+      overflowX: "hidden",
     }}>
       {/* ── Global Styles ── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@400;700&display=swap');
         @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         .dash-section { animation: fadeUp 0.4s ease both; }
-        .preset-row:hover { background: #1a1a24 !important; }
+        .preset-row:hover { background: var(--bg3) !important; }
         .fav-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+        
+        /* Theme transitions */
+        * {
+          transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
       `}</style>
 
-      <div style={{
+            <div style={{
         maxWidth: 1100,
         margin: "0 auto",
         padding: "2.5rem 1.5rem",
+        width: "100%",
+        boxSizing: "border-box",
       }}>
 
         {/* ── Header ── */}
@@ -249,7 +260,7 @@ export default function Profile() {
               width: 72,
               height: 72,
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #c026d3, #7c3aed)",
+              background: "linear-gradient(135deg, var(--purple), var(--blue))",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -257,14 +268,14 @@ export default function Profile() {
               fontWeight: 800,
               color: "#fff",
               fontFamily: "'Syne', sans-serif",
-              boxShadow: "0 0 0 3px #13131a, 0 0 0 5px #c026d333",
+              boxShadow: "0 0 0 3px var(--bg2), 0 0 0 5px var(--purple-dim)",
             }}>
               {initials}
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <h1 style={{
-                  color: "#fff",
+                  color: "var(--text)",
                   fontFamily: "'Syne', sans-serif",
                   fontSize: "1.5rem",
                   fontWeight: 800,
@@ -274,9 +285,9 @@ export default function Profile() {
                 </h1>
                 {user.isAdmin && (
                   <span style={{
-                    background: "#c026d322",
-                    border: "1px solid #c026d355",
-                    color: "#e879f9",
+                    background: "var(--purple-dim)",
+                    border: "1px solid var(--purple-lt)55",
+                    color: "var(--purple-lt)",
                     fontSize: 11,
                     fontFamily: "'DM Mono', monospace",
                     padding: "2px 8px",
@@ -287,7 +298,7 @@ export default function Profile() {
                   </span>
                 )}
               </div>
-              <div style={{ color: "#555", fontSize: 14, marginTop: 2 }}>
+              <div style={{ color: "var(--text-muted)", fontSize: 14, marginTop: 2 }}>
                 {user.email}
               </div>
             </div>
@@ -298,9 +309,9 @@ export default function Profile() {
               <button
                 onClick={() => navigate("/admin")}
                 style={{
-                  background: "#13131a",
-                  border: "1px solid #222",
-                  color: "#e879f9",
+                  background: "var(--bg2)",
+                  border: "1px solid var(--border)",
+                  color: "var(--purple-lt)",
                   borderRadius: 10,
                   padding: "0.6rem 1.2rem",
                   fontFamily: "'DM Sans', sans-serif",
@@ -315,9 +326,9 @@ export default function Profile() {
             <button
               onClick={() => { logout(); navigate("/login"); }}
               style={{
-                background: "#13131a",
-                border: "1px solid #2a1a1a",
-                color: "#f87171",
+                background: "var(--bg2)",
+                border: "1px solid var(--border)",
+                color: "var(--red)",
                 borderRadius: 10,
                 padding: "0.6rem 1.2rem",
                 fontFamily: "'DM Sans', sans-serif",
@@ -339,14 +350,14 @@ export default function Profile() {
           marginBottom: "2.5rem",
           animationDelay: "0.1s",
         }}>
-          <StatCard icon="📥" label="Downloads" value={orders.length} accent="#e879f9" />
-          <StatCard icon="❤️" label="Favorites" value={favorites.length} accent="#f43f5e" />
-          <StatCard icon="📦" label="Items Downloaded" value={totalDownloads} accent="#10b981" />
+          <StatCard icon="📥" label="Downloads" value={orders.length} accent="var(--purple)" />
+          <StatCard icon="❤️" label="Favorites" value={favorites.length} accent="var(--red)" />
+          <StatCard icon="📦" label="Items Downloaded" value={totalDownloads} accent="var(--green)" />
         </div>
 
         {/* ── Tabs ── */}
         <div className="dash-section" style={{
-          borderBottom: "1px solid #1a1a24",
+          borderBottom: "1px solid var(--border)",
           display: "flex",
           gap: 0,
           marginBottom: "2rem",
@@ -387,8 +398,8 @@ export default function Profile() {
                   <div
                     key={order._id}
                     style={{
-                      background: "#13131a",
-                      border: "1px solid #1e1e2a",
+                      background: "var(--bg2)",
+                      border: "1px solid var(--border)",
                       borderRadius: 16,
                       padding: "1.25rem 1.5rem",
                     }}
@@ -404,7 +415,7 @@ export default function Profile() {
                     }}>
                       <div>
                         <div style={{
-                          color: "#f9fafb",
+                          color: "var(--text)",
                           fontFamily: "'Syne', sans-serif",
                           fontWeight: 700,
                           fontSize: "0.95rem",
@@ -412,7 +423,7 @@ export default function Profile() {
                           Download #{order._id.slice(-6).toUpperCase()}
                         </div>
                         <div style={{
-                          color: "#555",
+                          color: "var(--text-muted)",
                           fontFamily: "'DM Mono', monospace",
                           fontSize: 12,
                           marginTop: 2,
@@ -426,9 +437,9 @@ export default function Profile() {
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                         <span style={{
-                          background: "#10b98122",
-                          border: "1px solid #10b98144",
-                          color: "#10b981",
+                          background: "var(--green)22",
+                          border: "1px solid var(--green)44",
+                          color: "var(--green)",
                           fontSize: 12,
                           fontFamily: "'DM Mono', monospace",
                           padding: "3px 10px",
@@ -446,8 +457,8 @@ export default function Profile() {
                           key={i}
                           className="preset-row"
                           style={{
-                            background: "#0a0a0f",
-                            border: "1px solid #1e1e2a",
+                            background: "var(--bg)",
+                            border: "1px solid var(--border)",
                             borderRadius: 10,
                             padding: "0.75rem 1rem",
                             display: "flex",
@@ -471,14 +482,14 @@ export default function Profile() {
                           )}
                           <div style={{ flex: 1 }}>
                             <div style={{
-                              color: "#f9fafb",
+                              color: "var(--text)",
                               fontWeight: 600,
                               fontSize: "0.9rem",
                             }}>
                               {item.name}
                             </div>
                             <div style={{
-                              color: "#555",
+                              color: "var(--text-muted)",
                               fontSize: 12,
                               marginTop: 2,
                             }}>
@@ -488,9 +499,9 @@ export default function Profile() {
                           <button
                             onClick={() => handleDownload(item.preset?._id || item.preset)}
                             style={{
-                              background: "#10b98122",
-                              border: "1px solid #10b98144",
-                              color: "#10b981",
+                              background: "var(--green)22",
+                              border: "1px solid var(--green)44",
+                              color: "var(--green)",
                               borderRadius: 8,
                               padding: "6px 14px",
                               fontSize: 12,
@@ -533,8 +544,8 @@ export default function Profile() {
                     key={preset._id}
                     className="fav-card"
                     style={{
-                      background: "#13131a",
-                      border: "1px solid #1e1e2a",
+                      background: "var(--bg2)",
+                      border: "1px solid var(--border)",
                       borderRadius: 16,
                       overflow: "hidden",
                       transition: "transform 0.25s, box-shadow 0.25s",
@@ -553,14 +564,14 @@ export default function Profile() {
                     />
                     <div style={{ padding: "0.85rem" }}>
                       <div style={{
-                        color: "#f9fafb",
+                        color: "var(--text)",
                         fontWeight: 700,
                         fontSize: "0.9rem",
                       }}>
                         {preset.name}
                       </div>
                       <div style={{
-                        color: "#666",
+                        color: "var(--text-muted)",
                         fontFamily: "'DM Mono', monospace",
                         fontSize: 12,
                         marginTop: 4,
@@ -582,8 +593,8 @@ export default function Profile() {
             maxWidth: 520,
           }}>
             <div style={{
-              background: "#13131a",
-              border: "1px solid #1e1e2a",
+              background: "var(--bg2)",
+              border: "1px solid var(--border)",
               borderRadius: 20,
               padding: "2rem",
               display: "flex",
@@ -591,7 +602,7 @@ export default function Profile() {
               gap: "1.5rem",
             }}>
               <h2 style={{
-                color: "#fff",
+                color: "var(--text)",
                 fontFamily: "'Syne', sans-serif",
                 margin: 0,
                 fontSize: "1.1rem",
@@ -603,11 +614,11 @@ export default function Profile() {
               <InfoRow label="Total Downloads" value={totalDownloads} />
 
               <div style={{
-                borderTop: "1px solid #1e1e2a",
+                borderTop: "1px solid var(--border)",
                 paddingTop: "1.5rem",
               }}>
                 <h3 style={{
-                  color: "#f87171",
+                  color: "var(--red)",
                   fontFamily: "'Syne', sans-serif",
                   fontSize: "0.95rem",
                   margin: "0 0 1rem",
@@ -617,9 +628,9 @@ export default function Profile() {
                 <button
                   onClick={() => { logout(); navigate("/login"); }}
                   style={{
-                    background: "#f8717122",
-                    border: "1px solid #f8717144",
-                    color: "#f87171",
+                    background: "var(--red)22",
+                    border: "1px solid var(--red)44",
+                    color: "var(--red)",
                     borderRadius: 10,
                     padding: "0.7rem 1.5rem",
                     fontFamily: "'DM Sans', sans-serif",

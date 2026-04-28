@@ -1,6 +1,16 @@
-/* ── App.css — Global Dark Theme ── */
+
+/* Fix horizontal overflow */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+/* ── App.css — Global Theme ── */
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@400;700&display=swap');
 
+/* Default Dark Theme */
 :root {
   --bg:        #0a0a0f;
   --bg2:       #13131a;
@@ -18,6 +28,24 @@
   --blue:      #6366f1;
 }
 
+/* Light Theme Overrides */
+[data-theme="light"] {
+  --bg:        #f3f4f6;
+  --bg2:       #ffffff;
+  --bg3:       #e5e7eb;
+  --border:    #d1d5db;
+  --text:      #111827;
+  --text-muted:#4b5563;
+  --text-dim:  #374151;
+  --purple:    #a855f7;
+  --purple-lt: #c084fc;
+  --purple-dim:#a855f722;
+  --green:     #10b981;
+  --red:       #ef4444;
+  --amber:     #f59e0b;
+  --blue:      #6366f1;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -29,6 +57,7 @@ body {
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3 {
@@ -83,4 +112,256 @@ input::placeholder {
 ::-webkit-scrollbar-thumb {
   background: var(--bg3);
   border-radius: 10px;
+}
+
+/* Add smooth transition for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Theme toggle button styling */
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--bg3);
+  transform: scale(1.1);
+}
+
+/* Navbar specific styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--purple-lt);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navbar-logo span {
+  color: var(--text);
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-links a,
+.navbar-logout {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-links a:hover,
+.navbar-logout:hover {
+  background: var(--bg3);
+  color: var(--purple-lt);
+}
+
+.navbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.navbar-logout {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--red);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .navbar-links {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Add this at the BOTTOM of your App.css */
+.preset-card,
+.fav-card,
+.home-preset-card {
+  background-color: var(--bg2) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+.preset-card:hover,
+.fav-card:hover,
+.home-preset-card:hover {
+  border-color: var(--purple-dim) !important;
+}
+
+.preset-card-image img,
+.fav-card img,
+.home-preset-card img {
+  transition: transform 0.4s ease !important;
+}
+
+.preset-card-heart,
+.fav-card .home-preset-heart,
+.home-preset-heart {
+  background: var(--bg3) !important;
+  color: var(--text) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.preset-card-heart:hover,
+.fav-card .home-preset-heart:hover,
+.home-preset-heart:hover {
+  background: var(--red)22 !important;
+  border-color: var(--red)44 !important;
+  color: var(--red) !important;
+}
+
+.preset-card-title,
+.fav-card .home-preset-name,
+.home-preset-name {
+  color: var(--text) !important;
+}
+
+.preset-card-title:hover,
+.fav-card .home-preset-name:hover,
+.home-preset-name:hover {
+  color: var(--purple-lt) !important;
+}
+
+.preset-card-desc,
+.fav-card .home-preset-desc,
+.home-preset-desc {
+  color: var(--text-muted) !important;
+}
+
+.preset-card-free,
+.fav-card .home-preset-price,
+.home-preset-price {
+  background: var(--green)22 !important;
+  border: 1px solid var(--green)44 !important;
+  color: var(--green) !important;
+}
+
+.preset-card-download-btn,
+.fav-card .home-preset-btn,
+.home-preset-btn {
+  background: linear-gradient(135deg, var(--purple), var(--blue)) !important;
+  color: white !important;
+}
+
+/* Add this at the bottom of your App.css */
+
+/* Admin Panel Specific Styles */
+.admin-page {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  min-height: 100vh;
+}
+
+.admin-form-card {
+  background: var(--bg2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+.admin-table {
+  background: var(--bg2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+.admin-table th,
+.admin-table td {
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+.badge-purple {
+  background: var(--purple-dim) !important;
+  color: var(--purple-lt) !important;
+  border: 1px solid var(--purple) !important;
+}
+
+.badge-gray {
+  background: #333 !important;
+  color: #999 !important;
+  border: 1px solid #444 !important;
+}
+
+.btn-toggle {
+  background: var(--blue) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.btn-delete {
+  background: var(--red) !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Admin Navigation Tabs */
+.admin-section-header button {
+  background: var(--bg3) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+.admin-section-header button:hover {
+  border-color: var(--purple) !important;
+  color: var(--purple-lt) !important;
+  background: var(--purple-dim) !important;
+}
+
+.admin-section-header button.active {
+  background: var(--purple-dim) !important;
+  border-color: var(--purple) !important;
+  color: var(--purple-lt) !important;
 }
